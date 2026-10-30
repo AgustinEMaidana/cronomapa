@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Cronomapa: juego educativo de Historia y Geografía de Argentina y Latinoamérica.">
+  <title>Cronomapa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<!-- ========== CARGANDO ========== -->
+<section class="pantalla activa" id="p-cargando" aria-live="polite">
+  <p class="cargando-texto">Encendiendo la Máquina del Tiempo…</p>
+</section>
+
+<!-- ========== SALA (MENÚ PRINCIPAL) ========== -->
+<section class="pantalla" id="p-sala">
+  <div class="sala">
+    <div class="sala-texto">
+      <h1 class="logo">Crono<span>mapa</span></h1>
+      <p class="historia">Un error en la Máquina del Tiempo desordenó la historia y el mapa de Latinoamérica. Como exploradora o explorador del tiempo, tenés que devolver cada hecho y cada territorio a su lugar. Cada nivel que completás repara una pieza de la máquina.</p>
+      <nav class="menu" aria-label="Menú principal">
+        <button class="btn btn-principal" data-accion="jugar">Jugar</button>
+        <button class="btn" data-accion="continuar" id="btn-continuar">Continuar</button>
+        <button class="btn" data-accion="ranking">Ranking</button>
+        <button class="btn" data-accion="instrucciones">Instrucciones</button>
+        <button class="btn" data-accion="config">Configuración</button>
+        <button class="btn btn-suave" data-accion="salir">Salir</button>
+      </nav>
+    </div>
+    <figure class="maquina">
+      <svg id="maquina-svg" viewBox="0 0 400 400" role="img" aria-labelledby="maquina-titulo"><title id="maquina-titulo">Estado de la Máquina del Tiempo</title></svg>
+      <figcaption id="maquina-estado">0 de 8 piezas reparadas</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ========== ELEGIR NIVEL ========== -->
+<section class="pantalla" id="p-niveles">
+  <header class="barra-pantalla">
+    <button class="btn btn-volver" data-accion="sala">Volver</button>
+    <h2>Elegí un modo y un nivel</h2>
+  </header>
+  <div class="pestanas" role="tablist" aria-label="Modos de juego">
+    <button role="tab" class="pestana" data-modo="tiempo" aria-selected="true">Línea de Tiempo</button>
+    <button role="tab" class="pestana" data-modo="mapa" aria-selected="false">Mapa-Quiz</button>
+    <button role="tab" class="pestana" data-modo="final" aria-selected="false">Desafío final</button>
+  </div>
+  <p class="ayuda-teclas">Usá las flechas ← → para cambiar de modo.</p>
+  <div class="lista-niveles" id="lista-niveles" role="tabpanel"></div>
+</section>
+
+<!-- ========== INSTRUCCIONES ========== -->
+<section class="pantalla" id="p-instrucciones">
+  <header class="barra-pantalla">
+    <button class="btn btn-volver" data-accion="sala">Volver</button>
+    <h2>Instrucciones</h2>
+  </header>
+  <div class="carrusel" id="carrusel">
+    <article class="diapo activa">
+      <h3>La misión</h3>
+      <p>La Máquina del Tiempo tiene 8 piezas rotas, una por nivel. Hay dos modos: en <strong>Línea de Tiempo</strong> ordenás hechos de la historia argentina y en <strong>Mapa-Quiz</strong> ubicás provincias, capitales, ríos y países. Cuando completás los dos modos se habilita el <strong>Desafío final</strong>.</p>
+    </article>
+    <article class="diapo">
+      <h3>Línea de Tiempo</h3>
+      <p>Arriba ves los hechos que ya están en su lugar, con su fecha. Abajo aparece una tarjeta nueva: arrastrala hasta el hueco donde va, o tocá el hueco. También podés moverla con las flechas ← →. Después tocá <strong>Confirmar</strong> o apretá Enter.</p>
+    </article>
+    <article class="diapo">
+      <h3>Mapa-Quiz</h3>
+      <p>Leé la consigna y tocá el lugar en el mapa: se marca en dorado. Si te equivocaste de lugar, tocá otro. Para responder, tocá <strong>Confirmar</strong> o apretá Enter. Podés acercar el mapa con los botones + y −, con la rueda del mouse o con dos dedos, y moverlo arrastrando.</p>
+    </article>
+    <article class="diapo">
+      <h3>Puntos, vidas y pistas</h3>
+      <p>Cada acierto da 100 puntos, más hasta 50 por el tiempo que te queda y 10 extra por cada acierto seguido. Tenés 3 vidas por nivel: cada error resta una. Si te quedás sin vidas o sin tiempo, perdés el nivel y podés reintentarlo. Empezás cada nivel con 2 pistas (tecla H) y cada una resta 30 puntos. Si acertás 3 seguidas ganás una pista más, hasta tener 3 como máximo: en la línea de tiempo te da un dato sobre el hecho para que deduzcas dónde va y en el mapa te muestra 3 opciones, una es la correcta. Con Esc pausás la partida.</p>
+    </article>
+  </div>
+  <div class="carrusel-control">
+    <button class="btn btn-icono" data-accion="diapo-ant" aria-label="Anterior">‹</button>
+    <div class="puntos-carrusel" id="puntos-carrusel"></div>
+    <button class="btn btn-icono" data-accion="diapo-sig" aria-label="Siguiente">›</button>
+  </div>
+</section>
+
+<!-- ========== RANKING ========== -->
+<section class="pantalla" id="p-ranking">
+  <header class="barra-pantalla">
+    <button class="btn btn-volver" data-accion="sala">Volver</button>
+    <h2>Ranking de este dispositivo</h2>
+  </header>
+  <div class="tabla-ranking-cont">
+    <table class="tabla-ranking">
+      <thead><tr><th>Puesto</th><th>Jugador</th><th>Puntaje</th><th>Nivel</th><th>Fecha</th></tr></thead>
+      <tbody id="tabla-ranking"></tbody>
+    </table>
+    <p class="vacio" id="ranking-vacio">Todavía no hay puntajes. Jugá un nivel y tu resultado aparece acá.</p>
+  </div>
+</section>
+
+<!-- ========== CONFIGURACIÓN ========== -->
+<section class="pantalla" id="p-config">
+  <header class="barra-pantalla">
+    <button class="btn btn-volver" data-accion="sala">Volver</button>
+    <h2>Configuración</h2>
+  </header>
+  <div class="form-config">
+    <label class="interruptor"><input type="checkbox" id="cfg-musica"> <span>Música de fondo</span></label>
+    <label class="interruptor"><input type="checkbox" id="cfg-efectos"> <span>Efectos de sonido</span></label>
+    <label class="campo">
+      <span>Tu nombre o apodo para el ranking</span>
+      <input type="text" id="cfg-apodo" maxlength="16" autocomplete="nickname">
+    </label>
+    <button class="btn btn-peligro" data-accion="borrar-progreso">Borrar progreso y ranking</button>
+  </div>
+</section>
+
+<!-- ========== SALIR ========== -->
+<section class="pantalla" id="p-salir">
+  <div class="despedida">
+    <h2>¡Gracias por jugar!</h2>
+    <p>Tu progreso quedó guardado en este dispositivo. Podés cerrar la pestaña cuando quieras.</p>
+    <button class="btn btn-principal" data-accion="sala">Volver a la sala</button>
+  </div>
+</section>
+
+<!-- ========== JUEGO ========== -->
+<section class="pantalla" id="p-juego">
+  <header class="hud">
+    <div class="hud-vidas" id="hud-vidas" aria-label="Vidas"></div>
+    <div class="hud-nivel" id="hud-nivel"></div>
+    <div class="hud-puntos"><span id="hud-puntos">0</span> pts</div>
+    <div class="hud-tiempo" id="hud-tiempo-cont"><span id="hud-tiempo">90</span> s</div>
+    <button class="btn btn-hud" id="btn-pista" data-accion="pista" title="Pista (H)">Pista <span id="hud-pistas">2</span></button>
+    <button class="btn btn-hud btn-icono" data-accion="pausa" title="Pausa (Esc)" aria-label="Pausa">II</button>
+  </header>
+  <div class="barra-tiempo"><div id="barra-tiempo"></div></div>
+  <p class="consigna" id="consigna" aria-live="polite"></p>
+
+  <div class="tablero" id="tablero">
+    <!-- Línea de tiempo -->
+    <div class="zona-tiempo" id="zona-tiempo" hidden>
+      <div class="cinta" id="cinta"></div>
+      <div class="bandeja">
+        <div class="tarjeta tarjeta-actual" id="tarjeta-actual" tabindex="0"></div>
+        <p class="pista-texto" id="pista-texto" aria-live="polite" hidden></p>
+        <p class="ayuda-teclas">Arrastrá la tarjeta o tocá un hueco. Flechas ← → para moverla.</p>
+      </div>
+    </div>
+    <!-- Mapa -->
+    <div class="zona-mapa" id="zona-mapa" hidden>
+      <div class="mapa-marco" id="mapa-marco"></div>
+      <div class="zoom">
+        <button class="btn btn-icono" data-accion="zoom-mas" aria-label="Acercar">+</button>
+        <button class="btn btn-icono" data-accion="zoom-menos" aria-label="Alejar">−</button>
+        <button class="btn btn-icono" data-accion="zoom-reset" aria-label="Ver mapa completo">⤢</button>
+      </div>
+      <p class="seleccion" id="seleccion-mapa" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <footer class="acciones-juego">
+    <button class="btn btn-principal" id="btn-confirmar" data-accion="confirmar" disabled>Confirmar</button>
+  </footer>
+</section>
+
+<!-- ========== CAPAS SUPERPUESTAS ========== -->
+<div class="capa" id="c-feedback" hidden>
+  <div class="hoja" role="dialog" aria-modal="true" aria-labelledby="fb-titulo">
+    <p class="fb-titulo" id="fb-titulo"></p>
+    <p class="fb-respuesta" id="fb-respuesta"></p>
+    <p class="fb-explicacion" id="fb-explicacion"></p>
+    <button class="btn btn-principal" data-accion="seguir">Continuar</button>
+  </div>
+</div>
+
+<div class="capa capa-centro" id="c-pausa" hidden>
+  <div class="caja" role="dialog" aria-modal="true" aria-labelledby="pausa-titulo">
+    <h2 id="pausa-titulo">Pausa</h2>
+    <button class="btn btn-principal" data-accion="reanudar">Continuar</button>
+    <button class="btn" data-accion="reiniciar">Reiniciar nivel</button>
+    <button class="btn btn-suave" data-accion="menu-desde-juego">Volver al menú</button>
+  </div>
+</div>
+
+<div class="capa capa-centro" id="c-fin" hidden>
+  <div class="caja caja-fin" role="dialog" aria-modal="true" aria-labelledby="fin-titulo">
+    <h2 id="fin-titulo"></h2>
+    <p id="fin-mensaje"></p>
+    <div class="estrellas" id="fin-estrellas" aria-hidden="true"></div>
+    <p class="fin-puntaje"><span id="fin-puntos">0</span> puntos</p>
+    <p class="fin-ranking" id="fin-ranking"></p>
+    <div class="repaso" id="fin-repaso"></div>
+    <div class="fin-botones" id="fin-botones"></div>
+  </div>
+</div>
+
+<div class="capa capa-centro" id="c-apodo" hidden>
+  <div class="caja" role="dialog" aria-modal="true" aria-labelledby="apodo-titulo">
+    <h2 id="apodo-titulo">¿Cómo te llamamos?</h2>
+    <p>Tu nombre o apodo aparece en el ranking de este dispositivo.</p>
+    <input type="text" id="input-apodo" maxlength="16" placeholder="Por ejemplo: Agus" autocomplete="nickname">
+    <button class="btn btn-principal" data-accion="guardar-apodo">Empezar</button>
+  </div>
+</div>
+
+<div class="aviso" id="aviso" role="status" hidden></div>
+
+<script src="js/juego.js"></script>
+</body>
+</html>
