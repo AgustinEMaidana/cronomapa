@@ -41,6 +41,7 @@ Los niveles se desbloquean en orden dentro de cada modo. El Desafío final se ha
 ```
 cronomapa/
 ├── index.html              Pantallas del juego (menú, niveles, juego, ranking…)
+├── favicon.svg             Ícono de la pestaña del navegador
 ├── css/estilos.css         Estilos (modo claro y oscuro, adaptable a celular)
 ├── js/juego.js             Toda la lógica del juego
 ├── datos/contenido.json    Banco de niveles, hechos históricos y preguntas
